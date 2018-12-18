@@ -1,0 +1,60 @@
+<div class="table">
+  <h1>Currencies</h1>
+  <div class="animated zoomIn form" *ngIf="addNew">
+    <h2>Add new currency</h2>
+    <div class="add-form">
+      <input type="text" id="name" placeholder="New Currency" [(ngModel)]="newName" style="width:200px" />
+
+      <input type="text" id="symbol" style="width:80px" placeholder="New Symbol" [(ngModel)]="newSymbol" />
+
+      <button (click)="addCurr()" class="addButton">
+        <i class="material-icons my-float md-48" style="font-size:20px;">save</i>
+      </button>
+    </div>
+  </div>
+  <div class="animated zoomIn form" *ngIf="editItem">
+    <h2>
+      Edit <em style="color:#555">{{ editName }}</em>
+    </h2>
+
+    <div class="add-form">
+      <input type="text" id="name" [(ngModel)]="editName" style="width:200px" />
+
+      <input type="text" id="symbol" style="width:80px" [(ngModel)]="editSymbol" />
+
+      <button (click)="submitEdit()" class="addButton">
+        <i class="material-icons my-float md-48" style="font-size:20px;">done</i>
+      </button>
+      <button (click)="hideEditForm()" class="addButton" style="background-color:#333">
+        <i class="material-icons my-float md-48" style="font-size:20px;">close</i>
+      </button>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th (click)="sortByName()">Name</th>
+        <th>Symbol</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let curr of currencies; let ind = index">
+        <td>{{ curr.name }}</td>
+        <td>{{ curr.symbol }}</td>
+
+        <td>
+          <i class="material-icons md-18" (click)="editCurr(curr)"> create </i>
+          <i class="material-icons close md-18" (click)="removeCurr(curr.id)">delete</i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<a *ngIf="!addNew" (click)="showAddForm()" class="float">
+  <i class="material-icons my-float md-48" style="font-size:50px;">add</i>
+</a>
+<a *ngIf="addNew" (click)="showAddForm()" class="float">
+  <i class="material-icons my-float md-48" style="font-size:50px;">close</i>
+</a>
