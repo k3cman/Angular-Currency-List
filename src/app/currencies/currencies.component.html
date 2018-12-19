@@ -1,14 +1,39 @@
 <div class="table">
-  <h1>Currencies</h1>
+  <div class="header">
+    <h1>Currencies</h1>
+    <div>
+      <button *ngIf="!addNew" (click)="showAddForm()" class="addButton">
+        <i class="material-icons my-float md-48" style="font-size:25px;">add</i>
+      </button>
+      <button *ngIf="addNew" (click)="showAddForm()" class="addButton">
+        <i class="material-icons my-float md-48" style="font-size:25px;">close</i>
+      </button>
+
+    </div>
+
+  </div>
+
   <div class="animated zoomIn form" *ngIf="addNew">
     <h2>Add new currency</h2>
+    <p *ngIf="error !== ''" style="color:red"><strong>{{error}}</strong></p>
     <div class="add-form">
-      <input type="text" id="name" placeholder="New Currency" [(ngModel)]="newName" style="width:200px" />
+      <div>
+        <input type="text" id="name" placeholder="Currency Name" [(ngModel)]="newName" style="width:200px" />
+        <br>
 
-      <input type="text" id="symbol" style="width:80px" placeholder="New Symbol" [(ngModel)]="newSymbol" />
+      </div>
+
+      <div>
+        <input type="text" id="symbol" style="width:80px" maxlength="3" placeholder="Symbol" [(ngModel)]="newSymbol" />
+        <br>
+      </div>
+
 
       <button (click)="addCurr()" class="addButton">
         <i class="material-icons my-float md-48" style="font-size:20px;">save</i>
+      </button>
+      <button (click)="showAddForm()" class="addButton" style="background-color:#333">
+        <i class="material-icons my-float md-48" style="font-size:25px;">close</i>
       </button>
     </div>
   </div>
@@ -16,7 +41,7 @@
     <h2>
       Edit <em style="color:#555">{{ editName }}</em>
     </h2>
-
+    <p *ngIf="error !== ''" style="color:red"><strong>{{error}}</strong></p>
     <div class="add-form">
       <input type="text" id="name" [(ngModel)]="editName" style="width:200px" />
 
@@ -34,7 +59,7 @@
   <table>
     <thead>
       <tr>
-        <th (click)="sortByName()">Name</th>
+        <th>Name</th>
         <th>Symbol</th>
         <th></th>
       </tr>
@@ -46,15 +71,25 @@
 
         <td>
           <i class="material-icons md-18" (click)="editCurr(curr)"> create </i>
-          <i class="material-icons close md-18" (click)="removeCurr(curr.id)">delete</i>
+          <i class="material-icons del md-18" (click)="modalSwitch(curr)">delete</i>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
-<a *ngIf="!addNew" (click)="showAddForm()" class="float">
-  <i class="material-icons my-float md-48" style="font-size:50px;">add</i>
-</a>
-<a *ngIf="addNew" (click)="showAddForm()" class="float">
-  <i class="material-icons my-float md-48" style="font-size:50px;">close</i>
-</a>
+<div *ngIf="modal" id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="modalSwitch()">&times;</span>
+    <p>Are you sure you want to delete currency <span class="red">{{ deleteName.name }}</span> with symbol <span class="red">{{
+        deleteName.symbol }}</span></p>
+
+    <p style="font-size:0.5em; color:red">THIS WILL SELECTED DELETE CURRENCY FORM DATABASE!!!</p>
+    <button (click)="removeCurr()" class="addButton">
+      <i class="material-icons my-float md-48" style="font-size:20px;">done</i>
+    </button>
+    <button (click)="modalSwitch()" class="addButton" style="background-color:#333">
+      <i class="material-icons my-float md-48" style="font-size:20px;">close</i>
+    </button>
+  </div>
+
+</div>
